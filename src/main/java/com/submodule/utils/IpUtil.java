@@ -21,7 +21,7 @@ public class IpUtil {
         } else if (ipRange[1].startsWith("27")) {
             return WORKER_THREE;
         } else {
-            throw new Exception("this is invalid Ip");
+            return UNKNOWN;
         }
     }
 

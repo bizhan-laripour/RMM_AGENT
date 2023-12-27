@@ -1,6 +1,7 @@
 package com.submodule.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.submodule.enums.Category;
 import com.submodule.enums.ServiceName;
 import com.submodule.enums.SourceFolder;
@@ -13,6 +14,7 @@ public class Threshold{
 
 
     @Id
+    @JsonIgnore
     private String id;
 
     private Boolean isActive;

@@ -21,6 +21,9 @@ spring:
       authentication-database: admin
       database: RMM
   rabbitmq:
+    listener:
+      simple:
+        default-requeue-rejected: true
     host: localhost
     port: 5672
     username: guest

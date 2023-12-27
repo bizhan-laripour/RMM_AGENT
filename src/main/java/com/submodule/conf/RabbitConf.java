@@ -39,6 +39,7 @@ public class RabbitConf {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queueName);
+        container.setPrefetchCount(1);
         container.setMessageListener(listenerAdapter);
         return container;
     }

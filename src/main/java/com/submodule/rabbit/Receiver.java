@@ -3,10 +3,12 @@ package com.submodule.rabbit;
 import com.google.gson.Gson;
 import com.submodule.dto.ConsumerDto;
 import com.submodule.entity.Threshold;
+import com.submodule.enums.IpRanges;
 import com.submodule.kafka.Producer;
 import com.submodule.service.ThresholdService;
 import com.submodule.utils.IpUtil;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -29,20 +31,18 @@ public class Receiver {
         this.ipUtil = ipUtil;
     }
 
+    @Transactional
     public void receiveMessage(String threshold) throws Exception {
         Threshold obj = gson.fromJson(threshold, Threshold.class);
         try {
-            thresholdService.save(obj);
-            latch.countDown();
-            ConsumerDto consumerDto;
-            try {
-               consumerDto = new ConsumerDto(ipUtil.chooseKafkaTopicForSendToWorker(obj).name(), obj);
-            }catch (Exception ex){
-                throw ex;
+            if (!ipUtil.chooseKafkaTopicForSendToWorker(obj).equals(IpRanges.UNKNOWN)) {
+                thresholdService.save(obj);
+                latch.countDown();
+                ConsumerDto consumerDto = new ConsumerDto(ipUtil.chooseKafkaTopicForSendToWorker(obj).name(), obj);
+                producer.sendMessage(consumerDto, consumerDto.getTopicName());
             }
-            producer.sendMessage(consumerDto, consumerDto.getTopicName());
         } catch (Exception exception) {
-            throw new Exception(exception.getMessage());
+            System.out.println("something bad ouccred");
         }
 
     }

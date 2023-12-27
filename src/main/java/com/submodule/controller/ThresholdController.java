@@ -33,11 +33,9 @@ public class ThresholdController {
         return new ResponseEntity<>(thresholdService.findAll() , HttpStatus.OK);
     }
 
-    @GetMapping("send")
-    public void send(@RequestParam String ip){
+    @PostMapping("send")
+    public void send(@RequestBody Threshold threshold){
         System.out.println("Sending message...");
-        Threshold threshold = new Threshold();
-        threshold.setIp(ip);
         Gson gson = new Gson();
         String obj = gson.toJson(threshold);
         rabbitTemplate.convertAndSend(RabbitConf.topicExchangeName, "foo.bar.baz", obj);
