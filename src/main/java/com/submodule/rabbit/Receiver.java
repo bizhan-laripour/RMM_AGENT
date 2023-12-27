@@ -34,7 +34,12 @@ public class Receiver {
         try {
             thresholdService.save(obj);
             latch.countDown();
-            ConsumerDto consumerDto = new ConsumerDto(ipUtil.chooseKafkaTopicForSendToWorker(obj).name(), obj);
+            ConsumerDto consumerDto;
+            try {
+               consumerDto = new ConsumerDto(ipUtil.chooseKafkaTopicForSendToWorker(obj).name(), obj);
+            }catch (Exception ex){
+                throw ex;
+            }
             producer.sendMessage(consumerDto, consumerDto.getTopicName());
         } catch (Exception exception) {
             throw new Exception(exception.getMessage());
