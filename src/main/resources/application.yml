@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: rootuser
+      password: rootpass
+      authentication-database: admin
+      database: RMM
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
