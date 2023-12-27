@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ThresholdRepository extends MongoRepository<Threshold, String > {
 
-
-
 }

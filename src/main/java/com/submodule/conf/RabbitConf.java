@@ -1,6 +1,6 @@
 package com.submodule.conf;
 
-import com.submodule.receiver.Receiver;
+import com.submodule.rabbit.Receiver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.amqp.core.Binding;
