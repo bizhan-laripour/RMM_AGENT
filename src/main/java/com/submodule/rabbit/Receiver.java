@@ -38,11 +38,11 @@ public class Receiver {
             if (!ipUtil.chooseKafkaTopicForSendToWorker(obj).equals(IpRanges.UNKNOWN)) {
                 thresholdService.save(obj);
                 latch.countDown();
-                ConsumerDto consumerDto = new ConsumerDto(ipUtil.chooseKafkaTopicForSendToWorker(obj).name(), obj);
-                producer.sendMessage(consumerDto, consumerDto.getTopicName());
+//                ConsumerDto consumerDto = new ConsumerDto(ipUtil.chooseKafkaTopicForSendToWorker(obj).name(), obj);
+//                producer.sendMessage(consumerDto, consumerDto.getTopicName());
             }
         } catch (Exception exception) {
-            System.out.println("something bad ouccred");
+            System.out.println("something bad occurred");
         }
 
     }
