@@ -8,6 +8,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 @Component
 public class WorkerScheduler {
@@ -27,8 +29,11 @@ public class WorkerScheduler {
     @Scheduled(fixedRate = 60000)
     public void getDeviceInformationFromElasticSearch(){
         ZabbixResponseDto zabbixResponseDto = workerFeign.getFromWorker(environment.getProperty("agent.ip"));
-        Threshold threshold = thresholdService.findByIp(environment.getProperty("agent.ip"));
-        compareAndCheck(zabbixResponseDto , threshold);
+        List<Threshold> thresholds = thresholdService.findByIp(environment.getProperty("agent.ip"));
+        for(Threshold threshold: thresholds){
+            compareAndCheck(zabbixResponseDto , threshold);
+        }
+
     }
 
 

@@ -35,12 +35,11 @@ public class Receiver {
     public void receiveMessage(String threshold) throws Exception {
         Threshold obj = gson.fromJson(threshold, Threshold.class);
         try {
-            if (!ipUtil.chooseKafkaTopicForSendToWorker(obj).equals(IpRanges.UNKNOWN)) {
+
                 thresholdService.save(obj);
                 latch.countDown();
 //                ConsumerDto consumerDto = new ConsumerDto(ipUtil.chooseKafkaTopicForSendToWorker(obj).name(), obj);
 //                producer.sendMessage(consumerDto, consumerDto.getTopicName());
-            }
         } catch (Exception exception) {
             System.out.println("something bad occurred");
         }

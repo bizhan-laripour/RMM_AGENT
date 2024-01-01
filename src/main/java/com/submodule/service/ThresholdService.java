@@ -25,7 +25,7 @@ public class ThresholdService {
         return thresholdRepository.findAll();
     }
 
-    public Threshold findByIp(String ip){
-        return thresholdRepository.findByIp(ip);
+    public List<Threshold> findByIp(String ip){
+        return thresholdRepository.findAllByIp(ip);
     }
 }

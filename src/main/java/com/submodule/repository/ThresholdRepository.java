@@ -4,9 +4,11 @@ import com.submodule.entity.Threshold;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ThresholdRepository extends MongoRepository<Threshold, String > {
 
-    Threshold findByIp(String ip);
+    List<Threshold> findAllByIp(String ip);
 
 }
