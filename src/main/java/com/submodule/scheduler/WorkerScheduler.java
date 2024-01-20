@@ -46,7 +46,7 @@ public class WorkerScheduler {
 
     private void checkMemory(ZabbixResponseDto zabbixResponseDto , Threshold threshold) throws Exception {
         List<ZabbixResultItemDto> result = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37412")).toList();
-        if(result != null && !result.isEmpty()){
+        if(!result.isEmpty()){
             if(threshold.getPercentage() < Long.valueOf(result.get(0).getLastvalue())){
                 throw new Exception("memory is under attack");
             }
