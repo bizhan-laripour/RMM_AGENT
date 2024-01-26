@@ -1,6 +1,7 @@
 package com.submodule.rabbit;
 
 import com.google.gson.Gson;
+import com.submodule.dto.Alarm;
 import com.submodule.dto.ConsumerDto;
 import com.submodule.entity.Threshold;
 import com.submodule.enums.IpRanges;
@@ -10,6 +11,7 @@ import com.submodule.utils.IpUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 @Component
@@ -33,13 +35,14 @@ public class Receiver {
 
     @Transactional
     public void receiveMessage(String threshold) throws Exception {
-        Threshold obj = gson.fromJson(threshold, Threshold.class);
-        try {
-                thresholdService.save(obj);
-                latch.countDown();
-        } catch (Exception exception) {
-            System.out.println("something bad occurred");
-        }
+        List<Alarm> obj = gson.fromJson(threshold, List.class);
+        System.out.println("recieved object is "+ obj);
+//        try {
+//                thresholdService.save(obj);
+//                latch.countDown();
+//        } catch (Exception exception) {
+//            System.out.println("something bad occurred");
+//        }
 
     }
 

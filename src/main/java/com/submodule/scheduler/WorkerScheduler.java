@@ -37,18 +37,20 @@ public class WorkerScheduler {
 
     @Scheduled(fixedRate = 60000)
     public void getDeviceInformationFromElasticSearch() throws Exception {
-        ZabbixResponseDto zabbixResponseDto = workerFeign.getFromWorker(environment.getProperty("agent.ip"));
         List<Threshold> thresholds = thresholdService.findByIp(environment.getProperty("agent.ip"));
-        List<Alarm> alarms = new ArrayList<>();
-        for (Threshold threshold : thresholds) {
-            Alarm alarm = compareAndCheck(zabbixResponseDto, threshold);
-            if (alarm != null) {
-                alarms.add(alarm);
+        if(!thresholds.isEmpty()) {
+            ZabbixResponseDto zabbixResponseDto = workerFeign.getFromWorker(environment.getProperty("agent.ip"));
+            List<Alarm> alarms = new ArrayList<>();
+            for (Threshold threshold : thresholds) {
+                Alarm alarm = compareAndCheck(zabbixResponseDto, threshold);
+                if (alarm != null) {
+                    alarms.add(alarm);
+                }
             }
+            Gson gson = new Gson();
+            String obj = gson.toJson(alarms);
+            rabbitTemplate.convertAndSend(RabbitConf.topicExchangeName, "foo.bar.baz", obj);
         }
-        Gson gson = new Gson();
-        String obj = gson.toJson(alarms);
-        rabbitTemplate.convertAndSend(RabbitConf.topicExchangeName, "foo.bar.baz", obj);
 
     }
 
@@ -71,11 +73,11 @@ public class WorkerScheduler {
     private Alarm checkMemory(ZabbixResponseDto zabbixResponseDto, Threshold threshold) throws Exception {
         List<ZabbixResultItemDto> memory = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37412")).toList();
         if (!memory.isEmpty()) {
-            if (threshold.getPercentage() < Long.valueOf(memory.get(0).getLastvalue())) {
+            if (threshold.getPercentage() < Double.parseDouble(memory.get(0).getLastvalue())) {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
                 //this is available memory
-                alarm.setMemoryUsage(Long.parseLong(zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37411")).toList().get(0).getLastvalue()));
+                alarm.setMemoryUsage(Double.parseDouble(zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37411")).toList().get(0).getLastvalue()));
                 return alarm;
             }
         }
@@ -85,9 +87,10 @@ public class WorkerScheduler {
     private Alarm checkHard(ZabbixResponseDto zabbixResponseDto, Threshold threshold) throws Exception {
         List<ZabbixResultItemDto> spaceUtilization = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37412")).toList();
         if (!spaceUtilization.isEmpty()) {
-            if (threshold.getPercentage() < Long.parseLong(spaceUtilization.get(0).getLastvalue())) {
+            if (threshold.getPercentage() < Double.parseDouble(spaceUtilization.get(0).getLastvalue())) {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
+                alarm.setMemoryUsage(Double.parseDouble(spaceUtilization.get(0).getLastvalue()));
                 return alarm;
             }
         }
@@ -97,10 +100,10 @@ public class WorkerScheduler {
     private Alarm checkCpu(ZabbixResponseDto zabbixResponseDto, Threshold threshold) {
         List<ZabbixResultItemDto> cpu = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37415")).toList();
         if (!cpu.isEmpty()) {
-            if (threshold.getPercentage() < Long.parseLong(cpu.get(0).getLastvalue())) {
+            if (threshold.getPercentage() < Double.parseDouble(cpu.get(0).getLastvalue())) {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
-                alarm.setCpuLoad(Long.parseLong(cpu.get(0).getLastvalue()));
+                alarm.setCpuLoad(Double.parseDouble(cpu.get(0).getLastvalue()));
                 return alarm;
             }
         }
