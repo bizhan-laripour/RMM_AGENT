@@ -48,6 +48,7 @@ public class WorkerScheduler {
 
     @Scheduled(fixedRate = 60000)
     public void getDeviceInformationFromElasticSearch() throws Exception {
+
         List<Threshold> thresholds = thresholdService.findByIp(environment.getProperty("agent.ip"));
         if (!thresholds.isEmpty()) {
             ZabbixResponseDto zabbixResponseDto = workerFeign.getFromWorker(environment.getProperty("agent.ip"));
