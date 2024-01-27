@@ -23,6 +23,7 @@ public class RabbitConf {
         return new Queue(queueName, false);
     }
 
+
     @Bean
     TopicExchange exchange() {
         return new TopicExchange(topicExchangeName);

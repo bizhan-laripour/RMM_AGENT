@@ -1,5 +1,7 @@
 package com.submodule.dto;
 
+import com.submodule.entity.Alarm;
+
 import java.util.List;
 
 public class RabitDto {

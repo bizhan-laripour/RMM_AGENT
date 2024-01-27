@@ -28,4 +28,5 @@ public class ThresholdService {
     public List<Threshold> findByIp(String ip){
         return thresholdRepository.findAllByIp(ip);
     }
+
 }

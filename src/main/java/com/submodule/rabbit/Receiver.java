@@ -1,10 +1,7 @@
 package com.submodule.rabbit;
 
 import com.google.gson.Gson;
-import com.submodule.dto.Alarm;
-import com.submodule.dto.ConsumerDto;
-import com.submodule.entity.Threshold;
-import com.submodule.enums.IpRanges;
+import com.submodule.entity.Alarm;
 import com.submodule.kafka.Producer;
 import com.submodule.service.ThresholdService;
 import com.submodule.utils.IpUtil;

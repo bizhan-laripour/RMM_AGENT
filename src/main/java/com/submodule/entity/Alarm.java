@@ -1,14 +1,20 @@
-package com.submodule.dto;
+package com.submodule.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.submodule.enums.Category;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-
+@Document
 public class Alarm {
 
 
+    @Id
+    @JsonIgnore
+    private String id;
     private Date date;
 
     private Category category;
@@ -23,6 +29,33 @@ public class Alarm {
 
     private double motherboardTemperature;
 
+    private String ip;
+
+    private Boolean isActive = true;
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 
     public Date getDate() {
         return date;
