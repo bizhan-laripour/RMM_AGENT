@@ -22,6 +22,6 @@ public class AlarmMockListener {
     @RabbitListener(queues = {"ALARM"})
     public void consume(String message){
         List<Alarm> obj = gson.fromJson(message, List.class);
-        obj.forEach(System.out::println);
+        System.out.println(obj);
     }
 }
