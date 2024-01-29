@@ -15,7 +15,7 @@ public class AlarmController {
         this.alarmService = alarmService;
     }
 
-    @GetMapping(value = "find-all")
+    @GetMapping(value = "alarm/find-all")
     public ResponseEntity<?> findAll(){
         return new ResponseEntity<>(alarmService.findAll() , HttpStatus.OK);
     }
