@@ -23,4 +23,9 @@ public class AlarmService {
     public List<Alarm> findByIp(String ip){
         return alarmRepository.findByIp(ip);
     }
+
+
+    public List<Alarm> findAll(){
+        return alarmRepository.findAll();
+    }
 }
