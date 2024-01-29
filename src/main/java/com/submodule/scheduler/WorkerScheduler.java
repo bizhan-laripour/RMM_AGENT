@@ -11,15 +11,12 @@ import com.submodule.feign.WorkerFeign;
 import com.submodule.service.AlarmService;
 import com.submodule.service.ThresholdService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Component
@@ -35,8 +32,6 @@ public class WorkerScheduler {
 
     private final AlarmService alarmService;
 
-
-    private static Map<String , String> ipRanges = new HashMap<>();
 
     public WorkerScheduler(Environment environment, RabbitTemplate rabbitTemplate, WorkerFeign workerFeign, ThresholdService thresholdService, AlarmService alarmService) {
         this.environment = environment;
@@ -67,9 +62,6 @@ public class WorkerScheduler {
     }
 
 
-    public void populateIpTable(){
-
-    }
     /**
      * the scheduler checks active alarms
      */
