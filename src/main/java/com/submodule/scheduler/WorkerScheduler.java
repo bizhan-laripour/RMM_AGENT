@@ -58,6 +58,7 @@ public class WorkerScheduler {
             }
             Gson gson = new Gson();
             String obj = gson.toJson(alarms);
+            checkAlarms();
             rabbitTemplate.convertAndSend(RabbitConf.exchange, RabbitConf.routingAlarmKey, obj);
         }
     }
@@ -66,7 +67,7 @@ public class WorkerScheduler {
     /**
      * the scheduler checks active alarms
      */
-    @Scheduled(fixedRate = 60000)
+
     public void checkAlarms() {
         List<Threshold> thresholds = thresholdService.findByIp(environment.getProperty("agent.ip"));
         List<Alarm> alarms = alarmService.findByIp(environment.getProperty("agent.ip"));
