@@ -19,4 +19,18 @@ public class AlarmController {
     public ResponseEntity<?> findAll(){
         return new ResponseEntity<>(alarmService.findAll() , HttpStatus.OK);
     }
+
+
+    @GetMapping(value = "alarm/find-active-alarms")
+    public ResponseEntity<?> findActiveAlarms(){
+        return new ResponseEntity<>(alarmService.findByActive(true) , HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "alarm/find-deactive-alarms")
+    public ResponseEntity<?> findDeactiveAlarms(){
+        return new ResponseEntity<>(alarmService.findByActive(false) , HttpStatus.OK);
+    }
+
+
 }

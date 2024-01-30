@@ -28,4 +28,9 @@ public class AlarmService {
     public List<Alarm> findAll(){
         return alarmRepository.findAll();
     }
+
+
+    public List<Alarm> findByActive(Boolean isActive){
+        return alarmRepository.findByActive(isActive);
+    }
 }
