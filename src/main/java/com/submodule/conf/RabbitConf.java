@@ -1,51 +1,68 @@
 package com.submodule.conf;
 
-import com.submodule.rabbit.Receiver;
+import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 
 @Configuration
 public class RabbitConf {
 
-   public  static final String topicExchangeName = "RMM-exchange";
 
-   public static final String queueName = "RMM";
 
+    public final static String alarmQueue = "ALARM";
+
+    public final static String rmmQueue = "RMM" ;
+
+
+    public final static String exchange = "RMM-exchange";
+
+    public final static String routingAlarmKey = "alarm_routing_key";
+
+    public final static String routingRmmKey = "rmm_routing_key";
+
+    // spring bean for rabbitmq queue
     @Bean
-    Queue queue() {
-        return new Queue(queueName, false);
+    public Queue AlarmQueue(){
+        return new Queue(alarmQueue);
     }
 
+    // spring bean for queue (store json messages)
     @Bean
-    TopicExchange exchange() {
-        return new TopicExchange(topicExchangeName);
+    public Queue rmmQueue(){
+        return new Queue(rmmQueue);
     }
 
+    // spring bean for rabbitmq exchange
     @Bean
-    Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("foo.bar.#");
+    public TopicExchange exchange(){
+        return new TopicExchange(exchange);
     }
 
+    // binding between queue and exchange using routing key
     @Bean
-    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
-                                             MessageListenerAdapter listenerAdapter) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(queueName);
-        container.setPrefetchCount(1);
-        container.setMessageListener(listenerAdapter);
-        return container;
+    public Binding binding(){
+        return BindingBuilder
+                .bind(AlarmQueue())
+                .to(exchange())
+                .with(routingAlarmKey);
     }
 
+    // binding between json queue and exchange using routing key
     @Bean
-    MessageListenerAdapter listenerAdapter(Receiver receiver) {
-        return new MessageListenerAdapter(receiver, "receiveMessage");
+    public Binding jsonBinding(){
+        return BindingBuilder
+                .bind(rmmQueue())
+                .to(exchange())
+                .with(routingRmmKey);
+    }
+
+
+
+    @Bean
+    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory){
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        return rabbitTemplate;
     }
 }
