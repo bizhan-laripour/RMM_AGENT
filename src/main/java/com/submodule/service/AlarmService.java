@@ -24,7 +24,8 @@ public class AlarmService {
         return alarmRepository.findByIp(ip);
     }
 
-    public List<Alarm> findByActive(Boolean active){
-        return alarmRepository.findByActive(active);
+
+    public List<Alarm> findAll(){
+        return alarmRepository.findAll();
     }
 }

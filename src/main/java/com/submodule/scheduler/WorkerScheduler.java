@@ -33,7 +33,8 @@ public class WorkerScheduler {
     private final AlarmService alarmService;
 
 
-    public WorkerScheduler(Environment environment, RabbitTemplate rabbitTemplate, WorkerFeign workerFeign, ThresholdService thresholdService, AlarmService alarmService) {
+    public WorkerScheduler(Environment environment, RabbitTemplate rabbitTemplate, WorkerFeign workerFeign,
+                           ThresholdService thresholdService, AlarmService alarmService) {
         this.environment = environment;
         this.rabbitTemplate = rabbitTemplate;
         this.workerFeign = workerFeign;
@@ -42,7 +43,7 @@ public class WorkerScheduler {
     }
 
     @Scheduled(fixedRate = 60000)
-    public void getDeviceInformationFromElasticSearch() throws Exception {
+    public void getDeviceInformationFromElasticSearch(){
 
         List<Threshold> thresholds = thresholdService.findByIp(environment.getProperty("agent.ip"));
         if (!thresholds.isEmpty()) {
@@ -57,7 +58,6 @@ public class WorkerScheduler {
             }
             Gson gson = new Gson();
             String obj = gson.toJson(alarms);
-            checkAlarms();
             rabbitTemplate.convertAndSend(RabbitConf.exchange, RabbitConf.routingAlarmKey, obj);
         }
     }
@@ -66,7 +66,7 @@ public class WorkerScheduler {
     /**
      * the scheduler checks active alarms
      */
-
+    @Scheduled(fixedRate = 60000)
     public void checkAlarms() {
         List<Threshold> thresholds = thresholdService.findByIp(environment.getProperty("agent.ip"));
         List<Alarm> alarms = alarmService.findByIp(environment.getProperty("agent.ip"));
@@ -100,7 +100,7 @@ public class WorkerScheduler {
     }
 
 
-    public Alarm compareAndCheck(ZabbixResponseDto zabbixResponseDto, Threshold threshold) throws Exception {
+    public Alarm compareAndCheck(ZabbixResponseDto zabbixResponseDto, Threshold threshold) {
         switch (threshold.getCategory()) {
             case MEMORY_USAGE -> {
                 return checkMemory(zabbixResponseDto, threshold);
@@ -115,12 +115,13 @@ public class WorkerScheduler {
         return null;
     }
 
-    private Alarm checkMemory(ZabbixResponseDto zabbixResponseDto, Threshold threshold) throws Exception {
+    private Alarm checkMemory(ZabbixResponseDto zabbixResponseDto, Threshold threshold) {
         List<ZabbixResultItemDto> memory = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37412")).toList();
         if (!memory.isEmpty()) {
             if (threshold.getPercentage() < Double.parseDouble(memory.get(0).getLastvalue())) {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
+                alarm.setIp(threshold.getIp());
                 //this is available memory
                 alarm.setMemoryUsage(Double.parseDouble(zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37411")).toList().get(0).getLastvalue()));
                 return alarm;
@@ -129,12 +130,13 @@ public class WorkerScheduler {
         return null;
     }
 
-    private Alarm checkHard(ZabbixResponseDto zabbixResponseDto, Threshold threshold) throws Exception {
+    private Alarm checkHard(ZabbixResponseDto zabbixResponseDto, Threshold threshold){
         List<ZabbixResultItemDto> spaceUtilization = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37608")).toList();
         if (!spaceUtilization.isEmpty()) {
             if (threshold.getPercentage() < Double.parseDouble(spaceUtilization.get(0).getLastvalue())) {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
+                alarm.setIp(threshold.getIp());
                 alarm.setMemoryUsage(Double.parseDouble(spaceUtilization.get(0).getLastvalue()));
                 return alarm;
             }
@@ -148,6 +150,7 @@ public class WorkerScheduler {
             if (threshold.getPercentage() < Double.parseDouble(cpu.get(0).getLastvalue())) {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
+                alarm.setIp(threshold.getIp());
                 alarm.setCpuLoad(Double.parseDouble(cpu.get(0).getLastvalue()));
                 return alarm;
             }
