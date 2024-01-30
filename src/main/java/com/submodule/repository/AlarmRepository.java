@@ -9,4 +9,6 @@ import java.util.List;
 public interface AlarmRepository extends MongoRepository<Alarm, String > {
 
     List<Alarm> findByIp(String ip);
+
+    List<Alarm> findByActive(Boolean active);
 }

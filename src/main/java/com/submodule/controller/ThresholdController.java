@@ -38,6 +38,6 @@ public class ThresholdController {
         System.out.println("Sending message...");
         Gson gson = new Gson();
         String obj = gson.toJson(threshold);
-        rabbitTemplate.convertAndSend(RabbitConf.topicExchangeName, "foo.bar.baz", obj);
+        rabbitTemplate.convertAndSend(RabbitConf.exchange, RabbitConf.routingRmmKey, obj);
     }
 }
