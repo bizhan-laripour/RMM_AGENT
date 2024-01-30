@@ -18,12 +18,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class Main  {
 
-    private final RabbitTemplate rabbitTemplate;
-
-    public Main(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Main.class , args);
     }
@@ -33,32 +27,4 @@ public class Main  {
         return new Gson();
     }
 
-//    @Bean
-//    public NewTopic workerOneTopic() {
-//        return TopicBuilder.name("WORKER_ONE")
-//                .build();
-//    }
-//
-//    @Bean
-//    public NewTopic workerTwoTopic() {
-//        return TopicBuilder.name("WORKER_TWO")
-//                .build();
-//    }
-//
-//    @Bean
-//    public NewTopic workerThreeTopic() {
-//        return TopicBuilder.name("WORKER_THREE")
-//                .build();
-//    }
-
-//    @Override
-//    public void run(String... args) throws Exception {
-//        System.out.println("Sending message...");
-//        Threshold threshold = new Threshold();
-//        threshold.setIp("192.168.25.1");
-//        Gson gson = new Gson();
-//        String obj = gson.toJson(threshold);
-//        rabbitTemplate.convertAndSend(RabbitConf.topicExchangeName, "foo.bar.baz", obj);
-//        Thread.sleep(3000);
-//    }
 }
