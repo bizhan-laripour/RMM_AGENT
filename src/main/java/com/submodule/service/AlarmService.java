@@ -31,6 +31,6 @@ public class AlarmService {
 
 
     public List<Alarm> findByActive(Boolean isActive){
-        return alarmRepository.findByActive(isActive);
+        return alarmRepository.findByIsActive(isActive);
     }
 }

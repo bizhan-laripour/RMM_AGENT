@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -122,6 +123,7 @@ public class WorkerScheduler {
             if (threshold.getPercentage() < Double.parseDouble(memory.get(0).getLastvalue())) {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
+                alarm.setDate(new Date());
                 alarm.setIp(threshold.getIp());
                 //this is available memory
                 alarm.setMemoryUsage(Double.parseDouble(zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37411")).toList().get(0).getLastvalue()));
@@ -138,6 +140,7 @@ public class WorkerScheduler {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
                 alarm.setIp(threshold.getIp());
+                alarm.setDate(new Date());
                 alarm.setMemoryUsage(Double.parseDouble(spaceUtilization.get(0).getLastvalue()));
                 return alarm;
             }
@@ -152,6 +155,7 @@ public class WorkerScheduler {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
                 alarm.setIp(threshold.getIp());
+                alarm.setDate(new Date());
                 alarm.setCpuLoad(Double.parseDouble(cpu.get(0).getLastvalue()));
                 return alarm;
             }
