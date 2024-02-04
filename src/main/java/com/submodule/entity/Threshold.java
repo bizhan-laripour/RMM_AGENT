@@ -22,7 +22,7 @@ public class Threshold{
 
     private Category category;
 
-    private Integer percentage;
+    private Double percentage;
 
     private Double timePeriod;
 
@@ -89,11 +89,11 @@ public class Threshold{
         this.category = category;
     }
 
-    public Integer getPercentage() {
+    public Double getPercentage() {
         return percentage;
     }
 
-    public void setPercentage(Integer percentage) {
+    public void setPercentage(Double percentage) {
         this.percentage = percentage;
     }
 
