@@ -11,4 +11,6 @@ public interface AlarmRepository extends MongoRepository<Alarm, String > {
     List<Alarm> findByIp(String ip);
 
     List<Alarm> findByIsActive(Boolean active);
+
+    List<Alarm> findByThresholdUUID(String uuid);
 }

@@ -9,6 +9,8 @@ import com.submodule.enums.WindowsEventSeverity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document
 public class Threshold{
 
@@ -16,6 +18,10 @@ public class Threshold{
     @Id
     @JsonIgnore
     private String id;
+
+    private Date date;
+
+    private String thresholdUUID;
 
     private Boolean isActive;
 
@@ -65,6 +71,22 @@ public class Threshold{
     private Integer items;
 
     private String ip;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getThresholdUUID() {
+        return thresholdUUID;
+    }
+
+    public void setThresholdUUID(String thresholdUUID) {
+        this.thresholdUUID = thresholdUUID;
+    }
 
     /**
      * this property must be cleared

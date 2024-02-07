@@ -125,6 +125,7 @@ public class WorkerScheduler {
                 alarm.setCategory(threshold.getCategory());
                 alarm.setDate(new Date());
                 alarm.setIp(threshold.getIp());
+                alarm.setThresholdUUID(threshold.getThresholdUUID());
                 //this is available memory
                 alarm.setMemoryUsage(Double.parseDouble(zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37411")).toList().get(0).getLastvalue()));
                 return alarm;
@@ -141,6 +142,7 @@ public class WorkerScheduler {
                 alarm.setCategory(threshold.getCategory());
                 alarm.setIp(threshold.getIp());
                 alarm.setDate(new Date());
+                alarm.setThresholdUUID(threshold.getThresholdUUID());
                 alarm.setMemoryUsage(Double.parseDouble(spaceUtilization.get(0).getLastvalue()));
                 return alarm;
             }
@@ -156,6 +158,7 @@ public class WorkerScheduler {
                 alarm.setCategory(threshold.getCategory());
                 alarm.setIp(threshold.getIp());
                 alarm.setDate(new Date());
+                alarm.setThresholdUUID(threshold.getThresholdUUID());
                 alarm.setCpuLoad(Double.parseDouble(cpu.get(0).getLastvalue()));
                 return alarm;
             }

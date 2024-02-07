@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ThresholdRepository extends MongoRepository<Threshold, String > {
 
-    List<Threshold> findAllByIp(String ip);
+    List<Threshold> findAllByIpOrderByDateAsc(String ip);
 
 }

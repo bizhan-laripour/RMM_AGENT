@@ -31,6 +31,16 @@ public class Alarm {
 
     private String ip;
 
+    private String thresholdUUID;
+
+    public String getThresholdUUID() {
+        return thresholdUUID;
+    }
+
+    public void setThresholdUUID(String thresholdUUID) {
+        this.thresholdUUID = thresholdUUID;
+    }
+
     private Boolean isActive = true;
 
     public Boolean getActive() {

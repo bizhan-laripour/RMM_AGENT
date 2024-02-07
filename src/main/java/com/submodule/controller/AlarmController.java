@@ -31,6 +31,10 @@ public class AlarmController {
     public ResponseEntity<?> findDeactiveAlarms(){
         return new ResponseEntity<>(alarmService.findByActive(false) , HttpStatus.OK);
     }
+    @GetMapping(value = "alarm/find-by-alarm-uuid")
+    public ResponseEntity<?> findByUUID(String uuid){
+        return new ResponseEntity<>(alarmService.findByUUId(uuid) , HttpStatus.OK);
+    }
 
 
 }

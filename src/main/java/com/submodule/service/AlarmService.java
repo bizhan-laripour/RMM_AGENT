@@ -33,4 +33,8 @@ public class AlarmService {
     public List<Alarm> findByActive(Boolean isActive){
         return alarmRepository.findByIsActive(isActive);
     }
+
+    public List<Alarm> findByUUId(String uuid){
+        return alarmRepository.findByThresholdUUID(uuid);
+    }
 }
