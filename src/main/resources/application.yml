@@ -12,9 +12,11 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       enable-auto-commit: 'false'
     bootstrap-servers: 127.0.0.1:9092
+  application:
+    name: agent
   data:
     mongodb:
-      host: localhost
+      host: 192.168.182.149
       port: 27017
       username: rootuser
       password: rootpass
@@ -24,7 +26,7 @@ spring:
     listener:
       simple:
         default-requeue-rejected: true
-    host: localhost
+    host: 192.168.182.149
     port: 5672
     username: guest
     password: guest
@@ -38,3 +40,5 @@ logging:
         data: debug
 agent:
   ip: 185.165.117.108
+
+

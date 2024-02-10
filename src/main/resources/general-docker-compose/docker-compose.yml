@@ -40,13 +40,11 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
 
-  worker:
-    image: worker
-    container_name: worker
+  discovery:
+    image: discovery
+    container_name: discovery
     ports:
-      - 8082:8082
-    environment:
-      - ELASTIC_SERVER_PORT=elasticsearch
+      - 8761:8761
 
   agent:
     image: agent
@@ -56,8 +54,19 @@ services:
       - SPRING_RABBITMQ_PORT=5672
       - SPRING_DATA_MONGODB_HOST=mongodb
       - SPRING_DATA_MONGODB_PORT=27017
+      - eureka.client.service-url=http://discovery/eureka
     ports:
       - 8080:8080
+
+
+  worker:
+    image: worker
+    container_name: worker
+    ports:
+      - 8082:8082
+    environment:
+      - ELASTIC_SERVER_PORT=elasticsearch:9200
+      - eureka.client.service-url=http://discovery/eureka
 
 
 
