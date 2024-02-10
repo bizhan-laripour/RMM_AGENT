@@ -54,7 +54,7 @@ services:
       - SPRING_RABBITMQ_PORT=5672
       - SPRING_DATA_MONGODB_HOST=mongodb
       - SPRING_DATA_MONGODB_PORT=27017
-      - eureka.client.service-url=http://discovery/eureka
+      - eureka.client.service-url.defaultZone=http://discovery:8761/eureka
     ports:
       - 8080:8080
 
@@ -66,7 +66,7 @@ services:
       - 8082:8082
     environment:
       - ELASTIC_SERVER_PORT=elasticsearch:9200
-      - eureka.client.service-url=http://discovery/eureka
+      - eureka.client.service-url.defaultZone=http://discovery:8761/eureka
 
 
 
