@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-
   mongodb:
     image: mongo:6-jammy
+    restart: on-failure
     container_name: mongodb
     ports:
       - 27017:27017
@@ -11,8 +11,15 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=rootuser
       - MONGO_INITDB_ROOT_PASSWORD=rootpass
 
+
+
+
   mongo-express:
+    depends_on:
+      mongodb:
+        condition: service_started
     image: mongo-express
+    restart: on-failure
     container_name: mongo-express
     ports:
       - 8083:8083
@@ -22,6 +29,7 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongodb
   rabbitmq:
     image: rabbitmq:management
+    restart: on-failure
     container_name: rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=guest
@@ -31,8 +39,12 @@ services:
       - 15672:15672
 
 
+
+
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.10.4
+    restart: on-failure
     container_name: elasticsearch-container
     ports:
       - 9200:9200
@@ -40,14 +52,31 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
 
+
+
+
+
   discovery:
     image: discovery
+    restart: on-failure
     container_name: discovery
     ports:
       - 8761:8761
 
+
+
+
+
   agent:
+    depends_on:
+      mongodb:
+        condition: service_started
+      discovery:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
     image: agent
+    restart: on-failure
     container_name: agent
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
@@ -59,8 +88,17 @@ services:
       - 8080:8080
 
 
+
+
   worker:
+    depends_on:
+      discovery:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+
     image: worker
+    restart: on-failure
     container_name: worker
     ports:
       - 8082:8082
