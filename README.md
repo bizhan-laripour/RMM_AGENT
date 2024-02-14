@@ -1,9 +1,11 @@
+This service compares Thresholds and Zabbix datas that had inserted into elasticsearch database.
+
+if the thresholds are being touched an alarm will be raised and push into the RabbitMQ queue that RMM module consumes this queue.
+
 Build Dockerfile with this command
 ```
 sudo docker build -t agent .
 
 ```
 
-This module gets data of servers from zabbix server and inserts all these datas into elasticsearch database in a 
-Scheduled period of time.
-These datas are used in Agent project for comparing Thresholds and these datas
+
