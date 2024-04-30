@@ -1,6 +1,5 @@
 package com.submodule.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.submodule.enums.Category;
 import org.springframework.data.annotation.Id;
