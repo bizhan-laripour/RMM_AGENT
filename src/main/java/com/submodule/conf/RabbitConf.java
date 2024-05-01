@@ -12,7 +12,6 @@ public class RabbitConf {
     public final static String alarmQueue = "ALARM";
     public final static String rmmQueue = "RMM" ;
     public final static String exchange = "RMM-exchange";
-
     public final static String routingAlarmKey = "alarm_routing_key";
 
     public final static String routingRmmKey = "rmm_routing_key";
