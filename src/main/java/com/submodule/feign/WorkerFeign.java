@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "worker")
 public interface WorkerFeign {
     @PostMapping(value = "/find-by-ip")
-    ZabbixResponseDto getFromWorker(@RequestParam String ip);
+    ZabbixResponseDto getFromWorker(@RequestParam(name="ip") String ip);
 
 }
