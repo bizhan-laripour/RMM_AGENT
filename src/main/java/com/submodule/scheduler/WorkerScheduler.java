@@ -80,21 +80,21 @@ public class WorkerScheduler {
         if (alarm.getCategory().equals(Category.MEMORY_USAGE)) {
             List<Threshold> t = thresholds.stream().filter(threshold -> threshold.getCategory().equals(Category.MEMORY_USAGE)).toList();
             List<ZabbixResultItemDto> memory = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37412")).toList();
-            if (t.get(0).getPercentage() > Double.parseDouble(memory.get(0).getLastvalue())) {
+            if (t.get(0).getPercentage() >= Double.parseDouble(memory.get(0).getLastvalue())) {
                 alarm.setActive(false);
                 alarmService.save(alarm);
             }
         }else if(alarm.getCategory().equals(Category.CPU_LOAD)){
             List<Threshold> t = thresholds.stream().filter(threshold -> threshold.getCategory().equals(Category.CPU_LOAD)).toList();
             List<ZabbixResultItemDto> cpu = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37415")).toList();
-            if (t.get(0).getPercentage() > Double.parseDouble(cpu.get(0).getLastvalue())) {
+            if (t.get(0).getPercentage() >= Double.parseDouble(cpu.get(0).getLastvalue())) {
                 alarm.setActive(false);
                 alarmService.save(alarm);
             }
         }else if(alarm.getCategory().equals(Category.HARD_DISK_USAGE)){
             List<Threshold> t = thresholds.stream().filter(threshold -> threshold.getCategory().equals(Category.HARD_DISK_USAGE)).toList();
             List<ZabbixResultItemDto> hard = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37608")).toList();
-            if (t.get(0).getPercentage() > Double.parseDouble(hard.get(0).getLastvalue())) {
+            if (t.get(0).getPercentage() >= Double.parseDouble(hard.get(0).getLastvalue())) {
                 alarm.setActive(false);
                 alarmService.save(alarm);
             }
