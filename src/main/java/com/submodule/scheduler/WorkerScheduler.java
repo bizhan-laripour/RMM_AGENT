@@ -120,7 +120,7 @@ public class WorkerScheduler {
     private Alarm checkMemory(ZabbixResponseDto zabbixResponseDto, Threshold threshold) {
         List<ZabbixResultItemDto> memory = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37412")).toList();
         if (!memory.isEmpty()) {
-            if (threshold.getPercentage() < Double.parseDouble(memory.get(0).getLastvalue())) {
+            if (threshold.getPercentage() <= Double.parseDouble(memory.get(0).getLastvalue())) {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
                 alarm.setDate(new Date());
@@ -137,7 +137,7 @@ public class WorkerScheduler {
     private Alarm checkHard(ZabbixResponseDto zabbixResponseDto, Threshold threshold){
         List<ZabbixResultItemDto> spaceUtilization = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37608")).toList();
         if (!spaceUtilization.isEmpty()) {
-            if (threshold.getPercentage() < Double.parseDouble(spaceUtilization.get(0).getLastvalue())) {
+            if (threshold.getPercentage() <= Double.parseDouble(spaceUtilization.get(0).getLastvalue())) {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
                 alarm.setIp(threshold.getIp());
@@ -153,7 +153,7 @@ public class WorkerScheduler {
     private Alarm checkCpu(ZabbixResponseDto zabbixResponseDto, Threshold threshold) {
         List<ZabbixResultItemDto> cpu = zabbixResponseDto.getResult().stream().filter(obj -> obj.getItemid().equals("37415")).toList();
         if (!cpu.isEmpty()) {
-            if (threshold.getPercentage() < Double.parseDouble(cpu.get(0).getLastvalue())) {
+            if (threshold.getPercentage() <= Double.parseDouble(cpu.get(0).getLastvalue())) {
                 Alarm alarm = new Alarm();
                 alarm.setCategory(threshold.getCategory());
                 alarm.setIp(threshold.getIp());
