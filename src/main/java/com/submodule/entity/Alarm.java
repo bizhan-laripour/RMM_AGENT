@@ -32,6 +32,16 @@ public class Alarm {
 
     private String thresholdUUID;
 
+    private String timePeriodInSec;
+
+    public String getTimePeriodInSec() {
+        return timePeriodInSec;
+    }
+
+    public void setTimePeriodInSec(String timePeriodInSec) {
+        this.timePeriodInSec = timePeriodInSec;
+    }
+
     public String getThresholdUUID() {
         return thresholdUUID;
     }
