@@ -2,6 +2,11 @@ package com.submodule.service;
 
 import com.submodule.entity.Alarm;
 import com.submodule.repository.AlarmRepository;
+import com.submodule.specification.AlarmFilterModel;
+import com.submodule.specification.MongoQuery;
+import com.submodule.specification.ResponseGenerator;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +15,11 @@ import java.util.List;
 public class AlarmService {
 
     private final AlarmRepository alarmRepository;
+    private final MongoQuery<Alarm> mongoQuery;
 
-    public AlarmService(AlarmRepository alarmRepository) {
+    public AlarmService(AlarmRepository alarmRepository, MongoQuery<Alarm> mongoQuery) {
         this.alarmRepository = alarmRepository;
+        this.mongoQuery = mongoQuery;
     }
 
 
@@ -36,5 +43,9 @@ public class AlarmService {
 
     public List<Alarm> findByUUId(String uuid){
         return alarmRepository.findByThresholdUUID(uuid);
+    }
+
+    public ResponseGenerator<Alarm> search(AlarmFilterModel alarmFilterModel) throws IllegalAccessException {
+        return mongoQuery.search(alarmFilterModel , Alarm.class , PageRequest.of(alarmFilterModel.getPageNumber() , alarmFilterModel.getPageSize()) , true);
     }
 }
